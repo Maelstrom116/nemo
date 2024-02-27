@@ -1,20 +1,17 @@
-# Set the base image
-FROM node:14
+# Stage 1: Build the frontend
+FROM node:14 AS build-frontend
+WORKDIR /app
+COPY client/package*.json ./client/
+RUN npm --prefix client install
+COPY client/ ./client/
+RUN npm --prefix client run build
 
-# Set the working directory
-WORKDIR /usr/src/app
-
-# Copy package.json and package-lock.json
-COPY server/package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of your server's code
-COPY server/ .
-
-# Expose the port your app runs on
+# Stage 2: Build the backend and copy the frontend build
+FROM node:14 AS build-backend
+WORKDIR /app
+COPY --from=build-frontend /app/client/build /app/public
+COPY server/package*.json ./server/
+RUN npm --prefix server install
+COPY server/ ./server/
 EXPOSE 3000
-
-# Command to run your app
-CMD ["npm", "start"]
+CMD ["npm", "--prefix", "server", "start"]

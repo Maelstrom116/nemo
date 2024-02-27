@@ -37,7 +37,7 @@ COPY client/ ./client/
 RUN npm --prefix client run build
 
 # Stage 2: Build the backend
-FROM node:14 AS build-backend
+FROM node:18 AS build-backend
 WORKDIR /app
 
 # Copy the backend package.json and package-lock.json (if available)

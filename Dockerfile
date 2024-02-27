@@ -5,6 +5,7 @@ COPY client/package*.json ./client/
 RUN npm --prefix client install
 COPY client/ ./client/
 RUN npm --prefix client run build
+RUN ls -la /app/client/build  # Add this line for debugging
 
 # Stage 2: Build the backend and copy the frontend build
 FROM node:14 AS build-backend

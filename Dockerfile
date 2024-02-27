@@ -25,7 +25,7 @@
 # CMD ["npm", "--prefix", "server", "start"]
 
 # Stage 1: Build the frontend
-FROM node:14 AS build-frontend
+FROM node:18 AS build-frontend
 WORKDIR /app
 
 # Copy the frontend package.json and package-lock.json (if available)
